@@ -57,7 +57,7 @@ class RadioProgramController extends Controller
     {
 
         $radioProgram = RadioProgram::find($radioProgram_id);
-        
+
         $data = [
         'program'=>$radioProgram,
         'title'=>'Radio Program'
@@ -90,6 +90,10 @@ class RadioProgramController extends Controller
         }     
 
         $radioProgram->update($data);
+
+        $radioProgram->refresh();
+
+    
 
         return redirect()->route('radio-programs.index');
     }

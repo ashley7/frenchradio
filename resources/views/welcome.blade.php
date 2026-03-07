@@ -30,10 +30,10 @@
 
                         @if($program->status == "live")
 
-                            <div class="mt-3">
+                            <div class="mt-3">                          
 
-                                <audio controls class="w-100">
-                                    <source src="{{ $program->stream_url }}">
+                                <audio controls autoplay>
+                                    <source src="{{ $program->stream_url }}" type="audio/mpeg">
                                 </audio>
 
                             </div>
@@ -92,7 +92,7 @@
 
                         </p>
 
-                        <a href="{{ route('radio-programs.show',$program->id) }}"
+                        <a href="{{ url('radioprograms/'.$program->id) }}"
                            class="btn btn-sm btn-outline-warning">
 
                             View Program
@@ -150,7 +150,7 @@
 
                         <div class="mt-3">
 
-                            <a href="{{ route('radio-programs.show',$program->id) }}"
+                            <a href="{{ url('radioprograms/'.$program->id) }}"
                                class="btn btn-sm btn-outline-secondary">
 
                                 View Program

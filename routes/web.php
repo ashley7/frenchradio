@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/', [FrontController::class, 'welcome']);
-Route::get('radio-programs/{id}', [RadioProgramController::class,'show']);
+Route::get('radioprograms/{id}', [RadioProgramController::class,'show']);
 
 Route::group(['middleware' => 'auth',], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
