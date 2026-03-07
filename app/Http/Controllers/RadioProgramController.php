@@ -2,64 +2,103 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RadioProgramRequest;
 use App\Models\RadioProgram;
-use Illuminate\Http\Request;
+ 
 
 class RadioProgramController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function index()
     {
-        //
+
+       $programs = RadioProgram::latest()->paginate(10);
+
+      
+
+       $data = [
+        'programs'=>$programs,
+        'title'=>'Radio Program'
+       ];
+
+       return view('radio_programs.program_list')->with($data);
+    
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+   
     public function create()
     {
-        //
+        $data = [
+        'title'=>'create Radio Program'
+       ];
+
+       return view('radio_programs.create_program')->with($data);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+ 
+    public function store(RadioProgramRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        if ($request->hasFile('recorded_file')) {
+            $data['recorded_file'] = $request->file('recorded_file')->store('radio_programs');
+        }
+
+        $data['created_by'] = auth()->id();
+
+        RadioProgram::create($data);
+
+        return redirect()->route('radio-programs.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(RadioProgram $radioProgram)
+    
+    public function show($radioProgram_id)
     {
-        //
+
+        $radioProgram = RadioProgram::find($radioProgram_id);
+        
+        $data = [
+        'program'=>$radioProgram,
+        'title'=>'Radio Program'
+       ];
+
+       return view('radio_programs.program')->with($data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+   
     public function edit(RadioProgram $radioProgram)
     {
-        //
+
+        $data = [
+            'program'=>$radioProgram,
+            'title'=>'Edit Radio Program'
+       ];
+
+       return view('radio_programs.edit_program')->with($data);
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, RadioProgram $radioProgram)
-    {
-        //
+    
+    public function update(RadioProgramRequest $request, RadioProgram $radioProgram)
+    {    
+
+        $data = $request->validated();      
+
+        if ($request->hasFile('recorded_file')) {
+            $data['recorded_file'] = $request->file('recorded_file')->store('radio_programs');
+        }     
+
+        $radioProgram->update($data);
+
+        return redirect()->route('radio-programs.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+   
     public function destroy(RadioProgram $radioProgram)
     {
-        //
+        $radioProgram->delete();
+
+        return redirect()->route('radio-programs.index');
     }
 }

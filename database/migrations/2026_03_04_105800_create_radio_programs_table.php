@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    
     public function up(): void
     {
         Schema::create('radio_programs', function (Blueprint $table) {
@@ -16,19 +14,16 @@ return new class extends Migration
             $table->timestamps();
             $table->string('title');
             $table->text('description');
-            $table->dateTime('scheduled_at')->nullable();
-            $table->boolean('is_live')->default(false);
+            $table->dateTime('start_time');
+            $table->dateTime('end_time');   
             $table->string('stream_url')->nullable();
             $table->string('recorded_file')->nullable();
-            $table->foreignId('created_by')->constrained('users');
-            $table->timestamps();
+            $table->foreignId('created_by')->constrained('users'); 
             $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+  
     public function down(): void
     {
         Schema::dropIfExists('radio_programs');
