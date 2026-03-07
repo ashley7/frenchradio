@@ -54,7 +54,7 @@
 
                         <h5 class="text-danger">🔴 Live Broadcast</h5>
 
-                        <audio controls class="w-100">
+                        <audio controls autoplay class="w-100">
                             <source src="{{ $program->stream_url }}">
                             Your browser does not support audio.
                         </audio>
