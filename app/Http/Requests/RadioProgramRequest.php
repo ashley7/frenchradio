@@ -18,7 +18,7 @@ class RadioProgramRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'start_time' => 'required|date|after_or_equal:now|before_or_equal:end_time',
+            'start_time' => 'required|date|before_or_equal:end_time',
             'end_time' => 'required|date|after:start_time',        
             'stream_url' => 'nullable|url',
             'recorded_file' => 'nullable|file|mimes:mp3,wav,mp4'
@@ -28,7 +28,7 @@ class RadioProgramRequest extends FormRequest
     public function messages()
     {
         return [
-            'start_time.after_or_equal' => 'Start time cannot be in the past.',
+            // 'start_time.after_or_equal' => 'Start time cannot be in the past.',
             'start_time.before_or_equal' => 'Start time must be before end time.',
             'end_time.after' => 'End time must be after start time.',
         ];
