@@ -2,41 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Podcast;
 use App\Models\PodcastLesson;
 use Illuminate\Http\Request;
 
 class PodcastLessonController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+     
     public function index()
     {
-        //
+        $lessons = PodcastLesson::with('podcast')->latest()->get();
+        return view('podcasts.lessons', compact('lessons'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+   
     public function create()
     {
-        //
+        $podcasts = Podcast::all();
+        return view('podcasts.create_lesson', compact('podcasts'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'podcast_id' => 'required|exists:podcasts,id',
+            'key_themes' => 'required',
+            'learning_outcomes' => 'required',
+            'practical_applications' => 'required',
+        ]);
+
+        PodcastLesson::create($request->all());
+        return redirect()->route('podcast_lessons.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(PodcastLesson $podcastLesson)
+    
+    public function show($id)
     {
-        //
+       $lesson = PodcastLesson::findOrFail($id);
+        $podcasts = Podcast::all();
+        return view('podcast_lessons.edit', compact('lesson', 'podcasts'));
     }
 
     /**
@@ -50,9 +55,19 @@ class PodcastLessonController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PodcastLesson $podcastLesson)
+    public function update(Request $request, $id)
     {
-        //
+        $lesson = PodcastLesson::findOrFail($id);
+
+        $request->validate([
+            'podcast_id' => 'required|exists:podcasts,id',
+            'key_themes' => 'required',
+            'learning_outcomes' => 'required',
+            'practical_applications' => 'required',
+        ]);
+
+        $lesson->update($request->all());
+        return redirect()->route('podcast_lessons.index');
     }
 
     /**
@@ -60,6 +75,7 @@ class PodcastLessonController extends Controller
      */
     public function destroy(PodcastLesson $podcastLesson)
     {
-        //
+        $podcastLesson->delete();
+        return back();
     }
 }

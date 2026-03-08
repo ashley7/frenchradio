@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Podcast;
+use App\Models\UserProgress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,11 +55,22 @@ class PodcastController extends Controller
          return redirect()->route('podcasts.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Podcast $podcast)
+   
+    public function show($id)
     {
+
+        $podcast = Podcast::with(['lessons.questions'])->findOrFail($id);
+
+        // Load user progress for this podcast if logged in
+        $userProgress = [];
+        if (Auth::check()) {
+            $userProgress = UserProgress::where('user_id', Auth::id())
+                ->where('podcast_id', $podcast->id)
+                ->pluck('completed', 'lesson_plan_id')
+                ->toArray();
+        }
+
+        return view('podcasts.show', compact('podcast', 'userProgress'));
      
     }
 

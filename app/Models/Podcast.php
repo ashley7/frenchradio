@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Podcast extends Model
@@ -21,5 +22,11 @@ class Podcast extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    function lessons() : HasMany {
+
+        return $this->hasMany(PodcastLesson::class);
+        
     }
 }

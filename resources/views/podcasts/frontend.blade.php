@@ -20,12 +20,10 @@
                             {{ $p->title }}
                         </h5>
 
-                        <p class="card-text">
-                            {{ $p->description }}
-                        </p>
+                       
 
                         <p class="text-muted small">
-                            Posted: {{ $p->created_at->diffForHumans() }}
+                            Posted: {{ $p->created_at->format('d M Y  j:s A') }}
                         </p>
 
                         {{-- Audio with Wavesurfer.js + Timer --}}
@@ -37,6 +35,11 @@
                                             onclick="togglePlay({{ $p->id }})">
                                         Play / Pause
                                     </button>
+
+                                    <a href="{{url('podcasts/'.$p->id)}}" class="btn btn-sm btn-outline-primary"
+                                            onclick="togglePlay({{ $p->id }})">
+                                        Details
+                                    </a>
                                     <span id="timer-{{ $p->id }}">00:00 / 00:00</span>
                                 </div>
                             </div>
@@ -49,6 +52,11 @@
                                         src="{{ $p->you_tube_embed_url }}"
                                         allowfullscreen>
                                 </iframe>
+
+                                <a href="{{url('podcasts/'.$p->id)}}" class="btn btn-sm btn-outline-primary"
+                                            onclick="togglePlay({{ $p->id }})">
+                                        Details
+                                    </a>
                             </div>
                         @endif
 

@@ -59,31 +59,21 @@
 
                         <td>
 
-                            @if($p->audio_file)
+                            @if($p->audio_file) Audio @endif
 
-                                <span class="badge badge-success">
-
-                                    Audio
-
-                                </span>
-
-                            @endif
-
-
-                            @if($p->you_tube_embed_url)
-
-                                <span class="badge badge-info">
-
-                                    Video
-
-                                </span>
-
-                            @endif
+                            @if($p->you_tube_embed_url) Video @endif
 
                         </td>
 
 
                         <td>
+
+                            <a href="{{ route('podcasts.show',$p->id) }}"
+                               class="btn btn-sm btn-primary">
+
+                                View
+
+                            </a>
 
                             <a href="{{ route('podcasts.edit',$p->id) }}"
                                class="btn btn-sm btn-warning">
