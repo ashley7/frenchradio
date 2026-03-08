@@ -19,7 +19,7 @@
 <div class="container mt-5">
 
     @auth
-        <a href="{{ route('podcast_lessons.create') }}">Add Lessons</a>
+        <a href="{{ route('podcast_lessons.create') }}" class="btn btn-primary">Add Lessons</a>
     @endauth
 
     <div class="card shadow-sm mb-4">

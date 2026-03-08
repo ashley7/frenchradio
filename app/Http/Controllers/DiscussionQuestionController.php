@@ -37,7 +37,7 @@ class DiscussionQuestionController extends Controller
     public function edit($id)
     {
         $question = DiscussionQuestion::findOrFail($id);
-        return view('discussion_questions.edit', compact('question'));
+         return view('discussion_questions.edit', compact('question'));
     }
 
     public function update(Request $request, $id)
