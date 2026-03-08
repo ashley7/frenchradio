@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="container">
+    <a href="{{ url('listen/podcasts') }}">Listen to Poadcasts</a>
 
     <h2 class="mb-4">Radio Programs</h2>
 
@@ -41,11 +42,7 @@
                         @endif
 
                         <div class="mt-3">
-                            <a href="{{ route('radio-programs.show',$program->id) }}"
-                               class="btn btn-sm btn-outline-danger">
-
-                                View Program
-                            </a>
+                            <a href="{{ url('radioprograms/'.$program->id) }}" class="btn btn-sm btn-outline-danger">View Program</a>
                         </div>
 
                     </div>

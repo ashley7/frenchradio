@@ -2,64 +2,96 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LessonPlanRequest;
 use App\Models\LessonPlan;
+use App\Models\RadioProgram;
 use Illuminate\Http\Request;
 
 class LessonPlanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function index()
     {
-        //
-    }
+       $lessons = LessonPlan::with('program')->latest()->paginate(10);
 
-    /**
-     * Show the form for creating a new resource.
-     */
+        return view('lesson_plans.index', compact('lessons'));
+    }
+ 
     public function create()
     {
-        //
+       $programs = RadioProgram::pluck('title','id');
+
+       return view('lesson_plans.create', compact('programs'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+   
+    public function store(LessonPlanRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        if ($request->hasFile('downloadable_material')) {
+
+            $data['downloadable_material'] =
+                $request->file('downloadable_material')
+                        ->store('lesson_materials');
+
+        }
+
+        LessonPlan::create($data);
+
+        return redirect()
+            ->route('lesson-plans.index')
+            ->with('success','Lesson created');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(LessonPlan $lessonPlan)
+  
+    public function show(LessonPlan $lesson_plan)
     {
-        //
+        return view('lesson_plans.show', [
+            'lesson' => $lesson_plan
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+   
     public function edit(LessonPlan $lessonPlan)
     {
-        //
+        $programs = RadioProgram::pluck('title','id');
+
+        return view('lesson_plans.edit', [
+            'lesson' => $lessonPlan,
+            'programs' => $programs
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, LessonPlan $lessonPlan)
+    
+    public function update(LessonPlanRequest $request, LessonPlan $lessonPlan)
     {
-        //
+
+       $data = $request->validated();
+
+        if ($request->hasFile('downloadable_material')) {
+
+            $data['downloadable_material'] =
+                $request->file('downloadable_material')
+                        ->store('lesson_materials');
+
+        }
+
+        $lessonPlan->update($data);
+
+         return redirect()
+            ->route('lesson-plans.index')
+            ->with('success','Updated');
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+   
     public function destroy(LessonPlan $lessonPlan)
     {
-        //
+        $lessonPlan->delete();
+
+        return redirect()
+            ->route('lesson-plans.index')
+            ->with('success','Deleted');
     }
 }

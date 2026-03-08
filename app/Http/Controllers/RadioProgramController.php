@@ -56,7 +56,7 @@ class RadioProgramController extends Controller
     public function show($radioProgram_id)
     {
 
-        $radioProgram = RadioProgram::find($radioProgram_id);
+        $radioProgram = RadioProgram::with('lessonPlans')->find($radioProgram_id);
 
         $data = [
         'program'=>$radioProgram,

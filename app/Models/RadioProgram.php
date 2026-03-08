@@ -33,6 +33,11 @@ class RadioProgram extends Model
         return $this->belongsTo(User::class,'created_by');
     }
 
+    public function lessonPlans()
+    {
+        return $this->hasMany(LessonPlan::class,'radio_program_id');
+    }
+
  
 
     public function getStatusAttribute()

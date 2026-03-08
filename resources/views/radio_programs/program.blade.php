@@ -99,6 +99,59 @@
 
                 </div>
 
+
+                {{-- ===================== --}}
+                {{-- LESSON PLANS --}}
+                {{-- ===================== --}}
+
+                <hr>
+
+                <h4>Lesson Plans</h4>
+
+                @if($program->lessonPlans->count())
+
+                    <table class="table table-bordered">
+
+                        <tr>
+                            <th>Title</th>
+                            <th>Actions</th>
+                        </tr>
+
+                        @foreach($program->lessonPlans as $lesson)
+
+                        <tr>
+
+                        <td>
+                             {{ $lesson->title }}
+                        </td>
+
+                        <td>
+
+                            <a href="{{ route('lesson-plans.show',$lesson->id) }}"
+                            class="btn btn-sm btn-info"> View </a>
+
+                        </td>
+
+                        </tr>
+
+                        @endforeach
+
+                </table>
+
+                @else
+
+                <div class="alert alert-info">
+
+                No lesson plans for this program.
+
+                </div>
+
+                @endif
+
+
+
+
+
             </div>
 
         </div>

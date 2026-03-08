@@ -34,6 +34,16 @@
                         <li class="nav-item"> 
                             <a  class="nav-link" href="{{ route('radio-programs.index') }}">RADIO PROGRAMS</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a  class="nav-link" href="{{ route('lesson-plans.index') }}">LESSON PLANS</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a  class="nav-link" href="{{ route('podcasts.index') }}">PODCASTS</a>
+                        </li>
+
+                        
                     </ul>
 
                     <!-- Right Side Of Navbar -->

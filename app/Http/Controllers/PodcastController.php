@@ -4,31 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Models\Podcast;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PodcastController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
-        //
+        $podcasts = Podcast::latest()->get();
+        return view('podcasts.index', compact('podcasts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
-        //
+        return view('podcasts.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'audio_file' => 'nullable|file|mimes:mp3,wav,ogg',
+            'you_tube_embed_url' => 'nullable|string'
+        ]);
+
+        // must have at least one
+        if (!$request->audio_file && !$request->you_tube_embed_url) {
+            return back()->withErrors('Provide audio OR video');
+        }
+
+          $audio = null;
+
+        if ($request->hasFile('audio_file')) {
+            $audio = $request->file('audio_file')
+                ->store('podcasts', 'public');
+        }
+
+        Podcast::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'audio_file' => $audio,
+            'you_tube_embed_url' => $request->you_tube_embed_url,
+            'created_by' => Auth::id()
+        ]);
+
+         return redirect()->route('podcasts.index');
     }
 
     /**
@@ -36,30 +59,59 @@ class PodcastController extends Controller
      */
     public function show(Podcast $podcast)
     {
-        //
+     
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(Podcast $podcast)
-    {
-        //
+    {         
+        return view('podcasts.edit', compact('podcast'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+   
     public function update(Request $request, Podcast $podcast)
     {
-        //
+      
+
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
+        if (!$request->audio_file && !$request->you_tube_embed_url && !$podcast->audio_file && !$podcast->you_tube_embed_url) {
+            return back()->withErrors('Provide audio OR video');
+        }
+
+        if ($request->hasFile('audio_file')) {
+            $audio = $request->file('audio_file')
+                ->store('podcasts', 'public');
+
+            $podcast->audio_file = $audio;
+        }
+
+        $podcast->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'you_tube_embed_url' => $request->you_tube_embed_url,
+        ]);
+
+        return redirect()->route('podcasts.index');
+
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+  
     public function destroy(Podcast $podcast)
     {
-        //
+        $podcast->delete();
+        return back();
+    }
+
+    // FRONTEND
+
+    public function frontend()
+    {
+        $podcasts = Podcast::latest()->get();
+        return view('podcasts.frontend', compact('podcasts'));
     }
 }
