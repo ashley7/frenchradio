@@ -18,14 +18,16 @@ Route::get('/', [FrontController::class, 'welcome']);
 Route::get('radioprograms/{id}', [RadioProgramController::class,'show']);
 Route::get('listen/podcasts', [PodcastController::class,'frontend'])
     ->name('podcasts.frontend');
-Route::get('podcasts/{id}', [PodcastController::class,'show']);
-Route::get('lesson-plans/{id}', [LessonPlanController::class,'show']);
+// Route::get('podcasts/{id}', [PodcastController::class,'show']);
+// Route::get('lesson-plans/{id}', [LessonPlanController::class,'show']);
+ Route::resource('lesson-plans', LessonPlanController::class);
+    Route::resource('podcasts', PodcastController::class);
 
 Route::group(['middleware' => 'auth',], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('radio-programs', RadioProgramController::class);
-    Route::resource('lesson-plans', LessonPlanController::class);
-    Route::resource('podcasts', PodcastController::class);
+   
+
 
     Route::resource('podcast_lessons', PodcastLessonController::class);
 

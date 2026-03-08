@@ -21,7 +21,9 @@ class LessonPlanController extends Controller
     {
        $programs = RadioProgram::pluck('title','id');
 
-       return view('lesson_plans.create', compact('programs'));
+       $title = "Create a Lesson plan";
+
+       return view('lesson_plans.create', compact('programs','title'));
     }
 
    
