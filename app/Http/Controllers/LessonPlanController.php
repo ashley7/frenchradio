@@ -45,8 +45,10 @@ class LessonPlanController extends Controller
     }
 
   
-    public function show(LessonPlan $lesson_plan)
+    public function show($lesson_plan_id)
     {
+        $lesson_plan = LessonPlan::find($lesson_plan_id);
+
         return view('lesson_plans.show', [
             'lesson' => $lesson_plan
         ]);

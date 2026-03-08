@@ -1,6 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
+
+ <style>
+         body {
+        background: url('{{ asset("images/radio-studio-bg.jpg") }}') no-repeat center center fixed;
+        background-size: cover;
+        color: #fff;
+    }
+
+    .overlay {
+        background-color: rgba(0, 0, 0, 0.75);
+        padding: 50px 0;
+        min-height: 100vh;
+    }
+
+     </style>
 <div class="container mt-5">
 
     @auth
@@ -29,7 +44,7 @@
             {{-- YouTube Video --}}
             @if($podcast->you_tube_embed_url)
                 <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item"
+                    <iframe width="100%" height="500px" class="embed-responsive-item"
                             src="{{ $podcast->you_tube_embed_url }}"
                             allowfullscreen></iframe>
                 </div>

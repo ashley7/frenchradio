@@ -2,155 +2,134 @@
 
 @section('content')
 
-<div class="container">
+ 
+ <style>
+         body {
+        background: url('{{ asset("images/radio-studio-bg.jpg") }}') no-repeat center center fixed;
+        background-size: cover;
+        color: #fff;
+    }
+
+    .overlay {
+        background-color: rgba(0, 0, 0, 0.75);
+        padding: 50px 0;
+        min-height: 100vh;
+    }
+
+     </style>
+
+<div class="container mt-5">
 
     <div class="row justify-content-center">
 
-        <div class="col-md-8">
+        <div class="col-lg-10">
 
-            <div class="card">
+            <div class="card shadow-sm border-primary">
 
-                <div class="card-header d-flex justify-content-between">
+                {{-- Program Header --}}
+                <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+                    <h4 class="mb-0">📻 {{ $program->title }}</h4>
 
-                    <h4>{{ $program->title }}</h4>
-
-                    {{-- STATUS BADGE --}}
                     @if($program->is_live)
-                        <span class="badge bg-danger">LIVE</span>
-
+                        <span class="badge bg-danger">🔴 LIVE</span>
                     @elseif($program->is_upcoming)
-                        <span class="badge bg-warning text-dark">UPCOMING</span>
-
+                        <span class="badge bg-warning text-dark">🟡 UPCOMING</span>
                     @elseif($program->is_ended)
-                        <span class="badge bg-secondary">ENDED</span>
+                        <span class="badge bg-secondary">⚫ ENDED</span>
                     @endif
-
                 </div>
 
                 <div class="card-body">
 
+                    {{-- Description --}}
                     <p>
-                        <strong>Description</strong><br>
+                        <i class="bi bi-card-text"></i>
+                        <strong>Description:</strong><br>
                         {{ $program->description }}
                     </p>
 
                     <hr>
 
+                    {{-- Start / End Time --}}
                     <p>
-                        <strong>Start Time</strong><br>
-                        {{ $program->start_time }}
+                        <i class="bi bi-clock"></i>
+                        <strong>Start Time:</strong> 
+                        {{ \Carbon\Carbon::parse($program->start_time)->format('d M Y h:i A') }}
+                    </p>
+                    <p>
+                        <i class="bi bi-clock-history"></i>
+                        <strong>End Time:</strong> 
+                        {{ \Carbon\Carbon::parse($program->end_time)->format('d M Y h:i A') }}
                     </p>
 
-                    <p>
-                        <strong>End Time</strong><br>
-                        {{ $program->end_time }}
-                    </p>
-
-
-                    {{-- LIVE STREAM --}}
+                    {{-- Live Stream --}}
                     @if($program->is_live && $program->stream_url)
-
                         <hr>
-
-                        <h5 class="text-danger">🔴 Live Broadcast</h5>
-
-                        <audio controls autoplay class="w-100">
+                        <h5 class="text-danger mb-3">🔴 Live Broadcast</h5>
+                        <audio controls autoplay class="w-100 mb-3">
                             <source src="{{ $program->stream_url }}">
                             Your browser does not support audio.
                         </audio>
-
                     @endif
 
-
-                    {{-- UPCOMING --}}
+                    {{-- Upcoming Program Alert --}}
                     @if($program->is_upcoming)
-
                         <hr>
-
-                        <div class="alert alert-warning">
-
+                        <div class="alert alert-warning d-flex align-items-center">
+                            <i class="bi bi-bell-fill me-2"></i>
                             This program will start at  
-                            <strong>{{ $program->start_time }}</strong>
-
+                            <strong>{{ \Carbon\Carbon::parse($program->start_time)->format('d M Y h:i A') }}</strong>
                         </div>
-
                     @endif
 
-
-                    {{-- RECORDED PROGRAM --}}
+                    {{-- Recorded Program --}}
                     @if($program->is_ended && $program->recorded_file)
-
                         <hr>
-
-                        <h5>Program Recording</h5>
-
-                        <audio controls class="w-100">
+                        <h5>📼 Program Recording</h5>
+                        <audio controls class="w-100 mb-3">
                             <source src="{{ asset('storage/'.$program->recorded_file) }}">
                         </audio>
-
                     @endif
-
 
                     <hr>
 
                     <a href="{{ route('radio-programs.index') }}" class="btn btn-secondary">
-                        Back to Programs
+                        ← Back to Programs
                     </a>
 
                 </div>
 
-
-                {{-- ===================== --}}
-                {{-- LESSON PLANS --}}
-                {{-- ===================== --}}
-
-                <hr>
-
-                <h4>Lesson Plans</h4>
-
+                {{-- Lesson Plans --}}
                 @if($program->lessonPlans->count())
-
-                    <table class="table table-bordered">
-
-                        <tr>
-                            <th>Title</th>
-                            <th>Actions</th>
-                        </tr>
-
-                        @foreach($program->lessonPlans as $lesson)
-
-                        <tr>
-
-                        <td>
-                             {{ $lesson->title }}
-                        </td>
-
-                        <td>
-
-                            <a href="{{ route('lesson-plans.show',$lesson->id) }}"
-                            class="btn btn-sm btn-info"> View </a>
-
-                        </td>
-
-                        </tr>
-
-                        @endforeach
-
-                </table>
-
+                    <hr>
+                    <div class="card-body">
+                        <h4>📚 Lesson Plans</h4>
+                        <table class="table table-hover table-bordered mt-3">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Title</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($program->lessonPlans as $lesson)
+                                    <tr>
+                                        <td>{{ $lesson->title }}</td>
+                                        <td class="text-center">
+                                            <a href="{{ route('lesson-plans.show',$lesson->id) }}" class="btn btn-sm btn-info">
+                                                <i class="bi bi-eye"></i> View
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 @else
-
-                <div class="alert alert-info">
-
-                No lesson plans for this program.
-
-                </div>
-
+                    <div class="alert alert-info m-3">
+                        <i class="bi bi-info-circle"></i> No lesson plans for this program.
+                    </div>
                 @endif
-
-
-
-
 
             </div>
 
