@@ -42,7 +42,7 @@ class RadioProgramController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('recorded_file')) {
-            $data['recorded_file'] = $request->file('recorded_file')->store('radio_programs');
+            $data['recorded_file'] = $request->file('recorded_file')->store('radio_programs','public');
         }
 
         $data['created_by'] = auth()->id();
@@ -86,7 +86,10 @@ class RadioProgramController extends Controller
         $data = $request->validated();      
 
         if ($request->hasFile('recorded_file')) {
-            $data['recorded_file'] = $request->file('recorded_file')->store('radio_programs');
+            
+
+            $data['recorded_file'] = $request->file('recorded_file')
+                                ->store('radio_programs', 'public');
         }     
 
         $radioProgram->update($data);
