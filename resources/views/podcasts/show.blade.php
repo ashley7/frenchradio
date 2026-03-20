@@ -83,8 +83,10 @@
         </div>
     @endforeach
 
-    <div class="container">
-        <div id="disqus_thread"></div>
+    <div class="card mb-3 shadow-sm">
+        <div class="container">
+            <div id="disqus_thread"></div>
+        </div>
     </div>
 
 </div>
