@@ -35,7 +35,7 @@ class LessonPlanController extends Controller
 
             $data['downloadable_material'] =
                 $request->file('downloadable_material')
-                        ->store('lesson_materials');
+                        ->store('lesson_materials','public');
 
         }
 
@@ -77,7 +77,7 @@ class LessonPlanController extends Controller
 
             $data['downloadable_material'] =
                 $request->file('downloadable_material')
-                        ->store('lesson_materials');
+                        ->store('lesson_materials','public');
 
         }
 
