@@ -131,13 +131,15 @@
                     </div>
                 @endif
 
+                 <div id="disqus_thread"></div>
+
             </div>
 
         </div>
 
     </div>
 
-    <div id="disqus_thread"></div>
+   
 <script>
     /**
     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
