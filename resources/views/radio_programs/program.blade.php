@@ -144,8 +144,8 @@
    
 <script>
     var disqus_config = function () {
-    this.page.url = {{url()->current()}};  
-    this.page.identifier = {{ $program->id }};
+    this.page.url = {{url()->current()}}
+    this.page.identifier = {{ $program->id }}
     };
    
     (function() { // DON'T EDIT BELOW THIS LINE

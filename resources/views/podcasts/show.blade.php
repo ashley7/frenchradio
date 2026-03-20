@@ -133,8 +133,8 @@
 
 <script>
     var disqus_config = function () {
-    this.page.url = {{url()->current()}};  
-    this.page.identifier = {{ $podcast->id }};
+    this.page.url = {{url()->current()}}
+    this.page.identifier = {{ $podcast->id }}
     };
    
     (function() { // DON'T EDIT BELOW THIS LINE
